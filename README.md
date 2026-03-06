@@ -1,217 +1,270 @@
-# StudyManager API
+Sobre o projeto
 
-API RESTful para gerenciamento de usuários, cursos e matrículas, desenvolvida com **FastAPI + SQLAlchemy**, seguindo **Arquitetura Limpa**, **Clean Code** e uso de **ORM**.
+Esse projeto foi feito como atividade prática para desenvolver uma API RESTful de gerenciamento de usuários, cursos e matrículas.
 
-## 1. Tecnologias
-- Python 3.11+
-- FastAPI
-- SQLAlchemy 2.x
-- SQLite
-- Uvicorn
+A aplicação permite:
 
-## 2. Estrutura de pastas
-```bash
-studymanager-api/
-├── app/
-│   ├── api/
-│   │   ├── dependencies.py
-│   │   └── routes/
-│   │       ├── users.py
-│   │       ├── courses.py
-│   │       └── enrollments.py
-│   ├── core/
-│   │   ├── config.py
-│   │   ├── exceptions.py
-│   │   └── response.py
-│   ├── entities/
-│   │   ├── __init__.py
-│   │   ├── user.py
-│   │   ├── course.py
-│   │   └── enrollment.py
-│   ├── infrastructure/
-│   │   └── database.py
-│   ├── repositories/
-│   │   ├── user_repository.py
-│   │   ├── course_repository.py
-│   │   └── enrollment_repository.py
-│   ├── schemas/
-│   │   ├── common.py
-│   │   ├── user.py
-│   │   ├── course.py
-│   │   └── enrollment.py
-│   ├── services/
-│   │   ├── user_service.py
-│   │   ├── course_service.py
-│   │   └── enrollment_service.py
-│   └── main.py
-├── tests/
-├── .env.example
-├── requirements.txt
-└── README.md
-```
+cadastro de usuários
 
-## 3. Justificativa da organização
-A aplicação foi organizada em camadas para isolar responsabilidades e facilitar manutenção, testes e evolução. As **routes/controllers** recebem a requisição HTTP e delegam a execução para os **services/use cases**, onde ficam as regras de negócio. Os **repositories** concentram o acesso ao banco via SQLAlchemy, evitando acoplamento direto da regra de negócio com a persistência. As **entities/models** representam as tabelas e relacionamentos do domínio. Já a camada de **infrastructure** cuida da conexão com banco e detalhes técnicos. Essa separação segue os princípios de Arquitetura Limpa, mantendo o código mais legível, testável e escalável.
+cadastro de cursos
 
-## 4. Modelagem do banco
-### User
-- id
-- name
-- email (único)
-- created_at
+matrícula de usuários em cursos
 
-### Course
-- id
-- title
-- description
-- workload
+consulta de dados
 
-### Enrollment
-- id
-- user_id
-- course_id
-- enrolled_at
+atualização e exclusão de registros
 
-### Relacionamentos
-- Um usuário pode ter várias matrículas
-- Um curso pode ter várias matrículas
-- Uma matrícula pertence a um usuário e a um curso
-- Restrição de unicidade composta em `(user_id, course_id)` para impedir matrícula duplicada
+Para o desenvolvimento, utilizei FastAPI com SQLAlchemy, aplicando separação em camadas, uso de ORM, validações e tratamento de erros.
 
-## 5. Como executar
-### 5.1 Criar ambiente virtual
-```bash
-python -m venv .venv
-```
+Objetivo
 
-### 5.2 Ativar o ambiente
-**Windows**
-```bash
-.venv\Scripts\activate
-```
+O objetivo da atividade era construir uma API organizada e funcional, aplicando conceitos de Arquitetura Limpa e Clean Code.
 
-**Linux/Mac**
-```bash
-source .venv/bin/activate
-```
+Além disso, o projeto precisava ter:
 
-### 5.3 Instalar dependências
-```bash
-pip install -r requirements.txt
-```
+CRUD de usuários
 
-### 5.4 Configurar variáveis de ambiente
-Crie um arquivo `.env` baseado no `.env.example`.
+CRUD de cursos
 
-### 5.5 Executar API
-```bash
-uvicorn app.main:app --reload
-```
+criação de matrículas
 
-A documentação ficará disponível em:
-- Swagger UI: `http://127.0.0.1:8000/docs`
-- ReDoc: `http://127.0.0.1:8000/redoc`
+consulta relacional
 
-## 6. Endpoints obrigatórios
-### Users
-- `POST /users`
-- `GET /users`
-- `GET /users/{id}`
-- `PUT /users/{id}`
-- `DELETE /users/{id}`
-- `GET /users/{id}/courses`
+validações de negócio
 
-### Courses
-- `POST /courses`
-- `GET /courses`
-- `GET /courses/{id}`
-- `PUT /courses/{id}`
-- `DELETE /courses/{id}`
+respostas padronizadas em JSON
 
-### Enrollments
-- `POST /enrollments`
+Tecnologias utilizadas
 
-## 7. Exemplos de payloads
-### Criar usuário
-```json
-{
-  "name": "Diogo Silva",
-  "email": "diogo@email.com"
-}
-```
+Python
 
-### Criar curso
-```json
-{
-  "title": "Python para APIs",
-  "description": "Curso introdutório de FastAPI e SQLAlchemy",
-  "workload": 20
-}
-```
+FastAPI
 
-### Criar matrícula
-```json
-{
-  "user_id": 1,
-  "course_id": 1
-}
-```
+SQLAlchemy
 
-## 8. Exemplo de resposta padronizada
-### Sucesso
-```json
+SQLite
+
+Pydantic
+
+Uvicorn
+
+Estrutura do projeto
+
+O projeto foi dividido em camadas para separar melhor cada responsabilidade.
+
+app/
+├── api/
+│   └── routes/
+├── core/
+├── entities/
+├── infrastructure/
+├── repositories/
+├── schemas/
+├── services/
+└── main.py
+Organização das camadas
+
+routes: recebe as requisições HTTP
+
+services: concentra as regras de negócio
+
+repositories: faz o acesso ao banco
+
+entities: define os modelos ORM
+
+infrastructure: contém a configuração do banco
+
+schemas: define validação e serialização dos dados
+
+core: centraliza configurações e tratamento de erros
+
+Essa organização ajuda a deixar o código mais limpo, mais fácil de entender e mais simples de manter.
+
+Modelagem do banco
+User
+
+id
+
+name
+
+email (único)
+
+created_at
+
+Course
+
+id
+
+title
+
+description
+
+workload
+
+Enrollment
+
+id
+
+user_id
+
+course_id
+
+enrolled_at
+
+Relacionamentos
+
+um usuário pode ter várias matrículas
+
+um curso pode ter várias matrículas
+
+uma matrícula pertence a um usuário e a um curso
+
+Funcionalidades implementadas
+Usuários
+
+POST /users
+
+GET /users
+
+GET /users/{id}
+
+PUT /users/{id}
+
+DELETE /users/{id}
+
+Cursos
+
+POST /courses
+
+GET /courses
+
+GET /courses/{id}
+
+PUT /courses/{id}
+
+DELETE /courses/{id}
+
+Matrículas
+
+POST /enrollments
+
+Consulta relacional
+
+GET /users/{id}/courses
+
+Esse endpoint retorna os dados do usuário e os cursos em que ele está matriculado.
+
+Regras aplicadas
+
+Durante a implementação, foram definidas algumas regras:
+
+o email do usuário deve ser único
+
+os campos obrigatórios precisam ser validados
+
+não pode existir matrícula duplicada
+
+só é possível matricular se o usuário existir
+
+só é possível matricular se o curso existir
+
+quando um registro não é encontrado, a API retorna erro padronizado
+
+Padrão de resposta
+
+As respostas da API seguem um formato JSON padronizado.
+
+Exemplo de sucesso
 {
   "success": true,
   "message": "User created successfully",
   "data": {
     "id": 1,
-    "name": "Diogo Silva",
-    "email": "diogo@email.com",
-    "created_at": "2026-03-05T18:00:00"
+    "name": "João Silva",
+    "email": "joao@email.com"
   }
 }
-```
-
-### Erro
-```json
+Exemplo de erro
 {
   "success": false,
   "message": "User not found",
   "data": null
 }
-```
 
-## 9. Regras de negócio implementadas
-- Email de usuário único
-- Validação automática com Pydantic
-- Matrícula duplicada bloqueada
-- Verificação de existência de usuário e curso antes da matrícula
-- Tratamento centralizado de exceções
-- Retornos HTTP coerentes (`201`, `200`, `404`, `409`, `422`)
+Também foram usados códigos HTTP adequados em cada situação.
 
-## 10. Passo a passo para subir no GitHub
-```bash
-git init
-git add .
-git commit -m "feat: initial StudyManager API"
-git branch -M main
-git remote add origin SEU_LINK_DO_GITHUB
-git push -u origin main
-```
+Como executar o projeto
+1. Clonar o repositório
+git clone https://github.com/SEU_USUARIO/studymanager-api.git
+2. Entrar na pasta do projeto
+cd studymanager-api
+3. Criar o ambiente virtual
+python -m venv .venv
+4. Ativar o ambiente virtual
 
-## 11. Sugestão de apresentação da atividade
-1. Explique rapidamente o domínio: usuários, cursos e matrículas.
-2. Mostre a estrutura em camadas.
-3. Aponte onde está cada responsabilidade.
-4. Abra o Swagger e execute os endpoints.
-5. Demonstre erro de email duplicado.
-6. Demonstre erro de matrícula duplicada.
-7. Mostre o endpoint relacional `/users/{id}/courses`.
+No Windows:
 
-## 12. Melhorias opcionais
-- Dockerfile
-- Testes automatizados com Pytest
-- Alembic para migrations
-- Paginação
-- Soft delete
-- Autenticação JWT
+.venv\Scripts\Activate
+
+No Linux/Mac:
+
+source .venv/bin/activate
+5. Instalar as dependências
+pip install -r requirements.txt
+6. Criar o arquivo .env
+
+Criar o arquivo .env com base no .env.example.
+
+7. Rodar a aplicação
+uvicorn app.main:app --reload
+8. Acessar a documentação
+http://127.0.0.1:8000/docs
+Testes realizados
+
+Os testes foram feitos manualmente pelo Swagger.
+
+Testes de usuários
+
+cadastro
+
+listagem
+
+busca por ID
+
+atualização
+
+exclusão
+
+Testes de cursos
+
+cadastro
+
+listagem
+
+busca por ID
+
+atualização
+
+exclusão
+
+Testes de matrículas
+
+criação de matrícula
+
+consulta dos cursos de um usuário
+
+Testes de erro
+
+tentativa de cadastro com email duplicado
+
+tentativa de matrícula duplicada
+
+busca de usuário inexistente
+
+matrícula com usuário inexistente
+
+matrícula com curso inexistente
+
+Clean Code e organização
+
+Procurei manter o código com nomes claros, métodos mais curtos e responsabilidades separadas. A lógica de negócio ficou fora das rotas, o acesso ao banco ficou concentrado nos repositories e o tratamento de erro foi padronizado para evitar respostas inconsistentes.
